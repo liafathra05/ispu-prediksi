@@ -2,20 +2,21 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
+import sys
+sys.path.append('.')
 from utils.sidebar import tampilkan_sidebar
 tampilkan_sidebar()
 
 st.title("🏆 Evaluasi & Perbandingan Model")
 
-if 'models_loaded' not in st.session_state:
-    st.warning("⚠️ Harap kembali ke Home terlebih dahulu.")
+if 'data_loaded' not in st.session_state:
+    st.warning("⚠️ Harap kembali ke halaman Home terlebih dahulu.")
     st.stop()
 
 arima_metrics = st.session_state['arima_metrics']
 hybrid_metrics = st.session_state['hybrid_metrics']
-actual_aligned = st.session_state['actual_aligned']
-arima_predictions = st.session_state['arima_predictions']
-hybrid_predictions = st.session_state['hybrid_predictions']
+arima_df = st.session_state['arima_df']
+hybrid_df = st.session_state['hybrid_df']
 
 # Tabel perbandingan
 st.subheader("📊 Tabel Perbandingan Metrik")
@@ -58,15 +59,18 @@ st.plotly_chart(fig2, use_container_width=True)
 st.subheader("📈 Perbandingan Semua Model vs Aktual")
 fig3 = go.Figure()
 fig3.add_trace(go.Scatter(
-    x=actual_aligned.index, y=actual_aligned.values,
+    x=pd.to_datetime(hybrid_df['tanggal']),
+    y=hybrid_df['aktual'],
     name='Aktual', line=dict(color='blue')))
 fig3.add_trace(go.Scatter(
-    x=arima_predictions[len(arima_predictions)-len(actual_aligned):].index,
-    y=arima_predictions[len(arima_predictions)-len(actual_aligned):].values,
+    x=pd.to_datetime(arima_df['tanggal']),
+    y=arima_df['prediksi_arima'],
     name='ARIMA', line=dict(color='green', dash='dot')))
 fig3.add_trace(go.Scatter(
-    x=hybrid_predictions.index, y=hybrid_predictions.values,
-    name='Hybrid ARIMA-BiLSTM', line=dict(color='red', dash='dash')))
+    x=pd.to_datetime(hybrid_df['tanggal']),
+    y=hybrid_df['prediksi_hybrid'],
+    name='Hybrid ARIMA-BiLSTM',
+    line=dict(color='red', dash='dash')))
 fig3.update_layout(title='Perbandingan Semua Model vs Aktual',
                    xaxis_title='Tanggal', yaxis_title='Nilai ISPU',
                    hovermode='x unified')

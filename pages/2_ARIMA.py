@@ -1,30 +1,34 @@
 import streamlit as st
+import pandas as pd
 import plotly.graph_objects as go
-import numpy as np
+import sys
+sys.path.append('.')
 from utils.sidebar import tampilkan_sidebar
 tampilkan_sidebar()
 
 st.title("📉 Model ARIMA")
 
-if 'models_loaded' not in st.session_state:
-    st.warning("⚠️ Harap kembali ke Home terlebih dahulu.")
+if 'data_loaded' not in st.session_state:
+    st.warning("⚠️ Harap kembali ke halaman Home terlebih dahulu.")
     st.stop()
 
-train_data = st.session_state['train_data']
-test_data = st.session_state['test_data']
-arima_predictions = st.session_state['arima_predictions']
+arima_df = st.session_state['arima_df']
 arima_metrics = st.session_state['arima_metrics']
-model_arima = st.session_state['model_arima']
 
 # Info model
 st.subheader("📋 Informasi Model ARIMA")
 col1, col2, col3 = st.columns(3)
-col1.metric("Order ARIMA", str(model_arima.order))
-col2.metric("Data Training", len(train_data))
-col3.metric("Data Testing", len(test_data))
+col1.metric("Order ARIMA", "(1, 1, 3)")
+col2.metric("Data Training", "2556")
+col3.metric("Data Testing", "639")
 
-# Visualisasi split data
+# Visualisasi pembagian data
 st.subheader("📊 Pembagian Data Training & Testing")
+ispu_series = st.session_state['ispu_series']
+train_size = int(len(ispu_series) * 0.8)
+train_data = ispu_series[:train_size]
+test_data = ispu_series[train_size:]
+
 fig1 = go.Figure()
 fig1.add_trace(go.Scatter(x=train_data.index, y=train_data.values,
                           name='Training', line=dict(color='blue')))
@@ -37,10 +41,13 @@ st.plotly_chart(fig1, use_container_width=True)
 # Visualisasi prediksi vs aktual
 st.subheader("📈 Prediksi ARIMA vs Aktual")
 fig2 = go.Figure()
-fig2.add_trace(go.Scatter(x=test_data.index, y=test_data.values,
+fig2.add_trace(go.Scatter(x=pd.to_datetime(arima_df['tanggal']),
+                          y=arima_df['aktual'],
                           name='Aktual', line=dict(color='blue')))
-fig2.add_trace(go.Scatter(x=arima_predictions.index, y=arima_predictions.values,
-                          name='Prediksi ARIMA', line=dict(color='green', dash='dot')))
+fig2.add_trace(go.Scatter(x=pd.to_datetime(arima_df['tanggal']),
+                          y=arima_df['prediksi_arima'],
+                          name='Prediksi ARIMA',
+                          line=dict(color='green', dash='dot')))
 fig2.update_layout(title='ARIMA: Prediksi vs Aktual',
                    xaxis_title='Tanggal', yaxis_title='Nilai ISPU')
 st.plotly_chart(fig2, use_container_width=True)
