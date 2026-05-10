@@ -33,6 +33,22 @@ def tampilkan_sidebar():
             [data-testid="stSidebar"] * {
                 color: white !important;
             }
+            [data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+                background-color: #1a1a2e !important;
+                color: white !important;
+            }
+            /* Warna teks di dalam dropdown */
+            [data-testid="stSelectbox"] span {
+                color: white !important;
+            }
+            /* Warna opsi saat dropdown dibuka */
+            [data-baseweb="popover"] li {
+                background-color: #16213e !important;
+                color: white !important;
+            }
+            [data-baseweb="popover"] li:hover {
+                background-color: #0f3460 !important;
+            }
         </style>
     """, unsafe_allow_html=True)
 
