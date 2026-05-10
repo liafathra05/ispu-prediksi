@@ -50,6 +50,27 @@ col_pilih = st.selectbox("Pilih polutan:", available_cols)
 fig2 = px.histogram(df_raw, x=col_pilih, nbins=50,
                     title=f"Distribusi Nilai {col_pilih}")
 st.plotly_chart(fig2, use_container_width=True)
+st.markdown("""
+    <style>
+        /* Warna background selectbox */
+        [data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+            background-color: #1a1a2e !important;
+            color: white !important;
+        }
+        /* Warna teks di dalam selectbox */
+        [data-testid="stSelectbox"] span {
+            color: white !important;
+        }
+        /* Warna opsi saat dropdown dibuka */
+        [data-baseweb="popover"] li {
+            background-color: #16213e !important;
+            color: white !important;
+        }
+        [data-baseweb="popover"] li:hover {
+            background-color: #0f3460 !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Korelasi
 st.subheader("🔥 Heatmap Korelasi Antar Polutan")
