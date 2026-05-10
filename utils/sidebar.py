@@ -63,11 +63,11 @@ def tampilkan_sidebar():
         st.markdown("--")
         st.markdown("### 📊 Kategori ISPU")
         st.markdown("""
-        🟢 **0-50** — Baik  
-        🟡 **51-100** — Sedang  
-        🟠 **101-200** — Tidak Sehat  
-        🔴 **201-300** — Sangat Tidak Sehat  
-        ⚫ **>300** — Berbahaya  
+        🟢 **0-50** - Baik  
+        🟡 **51-100** - Sedang  
+        🟠 **101-200** - Tidak Sehat  
+        🔴 **201-300** - Sangat Tidak Sehat  
+        ⚫ **>300** - Berbahaya  
         """)
         st.markdown("---")
         st.caption("© 2024 Prediksi ISPU Jakarta")
