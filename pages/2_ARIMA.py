@@ -19,8 +19,8 @@ arima_metrics = st.session_state['arima_metrics']
 st.subheader("📋 Informasi Model ARIMA")
 col1, col2, col3 = st.columns(3)
 col1.metric("Order ARIMA", "(1, 1, 2)")
-col2.metric("Data Training", "2556")
-col3.metric("Data Testing", "639")
+col2.metric("Data Training", "511")
+col3.metric("Data Testing", "128")
 
 # Visualisasi pembagian data
 st.subheader("📊 Pembagian Data Training & Testing")
