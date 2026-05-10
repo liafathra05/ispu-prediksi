@@ -61,9 +61,9 @@ col3.metric("RMSE Hybrid",
 st.markdown("""
 ### 📌 Panduan Navigasi
 Gunakan sidebar kiri untuk navigasi:
-- 📊 **EDA** — Lihat visualisasi dan statistik data
-- 📉 **ARIMA** — Lihat hasil model ARIMA
-- 🧠 **BiLSTM** — Lihat hasil model BiLSTM
-- 🏆 **Evaluasi** — Bandingkan semua model
-- 🔮 **Prediksi** — Prediksi ISPU hari ke depan
+- 📊 **EDA** - Lihat visualisasi dan statistik data
+- 📉 **ARIMA** - Lihat hasil model ARIMA
+- 🧠 **BiLSTM** - Lihat hasil model BiLSTM
+- 🏆 **Evaluasi** - Bandingkan semua model
+- 🔮 **Prediksi** - Prediksi ISPU hari ke depan
 """)
