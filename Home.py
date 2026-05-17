@@ -10,7 +10,7 @@ st.set_page_config(
 
 import sys
 sys.path.append('.')
-from sidebar import tampilkan_sidebar
+from utils.sidebar import tampilkan_sidebar
 tampilkan_sidebar()
 
 # ===================== HALAMAN DASHBOARD =====================
@@ -86,11 +86,11 @@ st.markdown("""
     <div class="identitas-box">
         <div class="identitas-row">
             <span class="identitas-label">Nama</span><br>
-            Safira Aulia Rahma
+            Liafathra
         </div>
         <div class="identitas-row">
             <span class="identitas-label">NIM</span><br>
-            4611422125
+            4611422128
         </div>
         <div class="identitas-row">
             <span class="identitas-label">Program Studi</span><br>
