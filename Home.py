@@ -178,7 +178,7 @@ st.markdown("""
             <div class="icon">💳</div>
             <div>
                 <div class="label">NIM</div>
-                <div class="value">4611422125</div>
+                <div class="value">4611422128</div>
             </div>
         </div>
         <div class="identitas-card">
