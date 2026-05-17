@@ -9,7 +9,7 @@ tampilkan_sidebar()
 st.title("🧠 Model Bidirectional LSTM")
 
 if 'data_loaded' not in st.session_state:
-    st.warning("⚠️ Harap kembali ke halaman Home terlebih dahulu.")
+    st.warning("⚠️ Harap kembali ke halaman Dashboard terlebih dahulu.")
     st.stop()
 
 hybrid_df = st.session_state['hybrid_df']
@@ -62,7 +62,6 @@ st.plotly_chart(fig2, use_container_width=True)
 
 # Evaluasi
 st.subheader("📊 Hasil Evaluasi Hybrid ARIMA-BiLSTM")
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 col1.metric("MAE", f"{hybrid_metrics['MAE']:.4f}")
-col2.metric("MSE", f"{hybrid_metrics['MSE']:.4f}")
-col3.metric("RMSE", f"{hybrid_metrics['RMSE']:.4f}")
+col2.metric("RMSE", f"{hybrid_metrics['RMSE']:.4f}")
