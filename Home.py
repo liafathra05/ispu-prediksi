@@ -175,7 +175,7 @@ st.markdown("""
             </div>
         </div>
         <div class="identitas-card">
-            <div class="icon">🪪</div>
+            <div class="icon">💳</div>
             <div>
                 <div class="label">NIM</div>
                 <div class="value">4611422125</div>
@@ -192,7 +192,7 @@ st.markdown("""
             <div class="icon">📅</div>
             <div>
                 <div class="label">Tahun</div>
-                <div class="value">2025</div>
+                <div class="value">2026</div>
             </div>
         </div>
     </div>
