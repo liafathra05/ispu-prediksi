@@ -10,7 +10,7 @@ tampilkan_sidebar()
 st.title("📊 Exploratory Data Analysis")
 
 if 'data_loaded' not in st.session_state:
-    st.warning("⚠️ Harap kembali ke halaman Home terlebih dahulu.")
+    st.warning("⚠️ Harap kembali ke halaman Dashboard terlebih dahulu.")
     st.stop()
 
 df = st.session_state['ispu_series']
