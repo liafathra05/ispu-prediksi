@@ -2,7 +2,7 @@ import streamlit as st
 import base64
 import sys
 sys.path.append('.')
-from sidebar import tampilkan_sidebar
+from utils.sidebar import tampilkan_sidebar
 tampilkan_sidebar()
 
 st.set_page_config(
