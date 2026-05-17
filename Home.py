@@ -1,6 +1,9 @@
 import streamlit as st
-import pandas as pd
-import os
+import base64
+import sys
+sys.path.append('.')
+from sidebar import tampilkan_sidebar
+tampilkan_sidebar()
 
 st.set_page_config(
     page_title="Prediksi ISPU Jakarta",
@@ -8,144 +11,263 @@ st.set_page_config(
     layout="wide"
 )
 
-import sys
-sys.path.append('.')
-from utils.sidebar import tampilkan_sidebar
-tampilkan_sidebar()
+# Fungsi load background image
+def get_base64_image(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
 
-# ===================== HALAMAN DASHBOARD =====================
-st.markdown("""
+img_base64 = get_base64_image("background.png")
+
+st.markdown(f"""
     <style>
-        .dashboard-container {
+        /* Sembunyikan header streamlit */
+        #MainMenu, header, footer {{visibility: hidden;}}
+        
+        /* Background utama */
+        .stApp {{
+            background-image: url("data:image/png;base64,{img_base64}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+
+        /* Overlay gelap supaya teks terbaca */
+        .stApp::before {{
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(10, 15, 40, 0.55);
+            z-index: 0;
+        }}
+
+        /* Judul utama */
+        .hero-title {{
             text-align: center;
-            padding: 20px;
-        }
-        .icon-container {
-            font-size: 80px;
-            margin-bottom: 10px;
-        }
-        .judul-skripsi {
-            font-size: 20px;
-            font-weight: bold;
-            color: #0f3460;
-            text-align: center;
-            margin: 20px auto;
-            max-width: 800px;
-            line-height: 1.6;
-            padding: 20px;
-            border: 2px solid #0f3460;
-            border-radius: 10px;
-            background-color: #f0f4ff;
-        }
-        .identitas-box {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 20px auto;
-            max-width: 600px;
-            border-left: 5px solid #0f3460;
-            text-align: left;
-        }
-        .identitas-row {
-            margin-bottom: 10px;
+            color: white;
             font-size: 16px;
-        }
-        .identitas-label {
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 40px;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }}
+
+        /* Judul skripsi */
+        .judul-skripsi {{
+            text-align: center;
+            color: white;
+            font-size: 22px;
             font-weight: bold;
-            color: #0f3460;
-        }
-        .divider {
-            margin: 30px auto;
-            max-width: 600px;
-            border: 1px solid #dee2e6;
-        }
+            line-height: 1.7;
+            max-width: 850px;
+            margin: 10px auto 40px auto;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }}
+
+        /* Divider bergaya */
+        .divider-line {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px auto 30px auto;
+            max-width: 400px;
+        }}
+        .divider-line::before, .divider-line::after {{
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.4);
+        }}
+        .divider-text {{
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            white-space: nowrap;
+        }}
+
+        /* Card identitas */
+        .identitas-grid {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto 20px auto;
+        }}
+        .identitas-card {{
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 15px 20px;
+            backdrop-filter: blur(10px);
+        }}
+        .identitas-card .icon {{
+            font-size: 24px;
+            margin-bottom: 8px;
+        }}
+        .identitas-card .label {{
+            color: #7eb3ff;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }}
+        .identitas-card .value {{
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }}
+
+        /* Card dosen pembimbing (full width) */
+        .dosbing-card {{
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 15px 20px;
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }}
+        .dosbing-card .icon {{
+            font-size: 28px;
+        }}
+        .dosbing-card .label {{
+            color: #7eb3ff;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }}
+        .dosbing-card .value {{
+            color: white;
+            font-size: 15px;
+            font-weight: 500;
+        }}
+
+        /* Icon fitur bawah */
+        .fitur-grid {{
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px auto;
+            max-width: 700px;
+        }}
+        .fitur-item {{
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+        }}
+        .fitur-item .fitur-icon {{
+            width: 60px;
+            height: 60px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 10px auto;
+            background: rgba(255,255,255,0.05);
+        }}
+        .fitur-item .fitur-label {{
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }}
     </style>
 """, unsafe_allow_html=True)
 
-# Judul skripsi
+# Hero section
 st.markdown("""
+    <div class="hero-title">Sistem Prediksi Kualitas Udara · DKI Jakarta</div>
     <div class="judul-skripsi">
-        PREDIKSI INDEKS STANDAR PENCEMAR UDARA DI DKI JAKARTA 
-        MENGGUNAKAN METODE HYBRID 
-        <i>AUTOREGRESSIVE INTEGRATED MOVING AVERAGE</i> (ARIMA) 
+        PREDIKSI INDEKS STANDAR PENCEMAR UDARA DI DKI JAKARTA<br>
+        MENGGUNAKAN METODE HYBRID
+        <i>AUTOREGRESSIVE INTEGRATED MOVING AVERAGE</i> (ARIMA)<br>
         DAN <i>BIDIRECTIONAL LSTM</i>
     </div>
 """, unsafe_allow_html=True)
 
-# Identitas
+# Divider
 st.markdown("""
-    <div class="identitas-box">
-        <div class="identitas-row">
-            <span class="identitas-label">Nama</span><br>
-            Liafathra
+    <div class="divider-line">
+        <span class="divider-text">✦ Tentang Penelitian ✦</span>
+    </div>
+""", unsafe_allow_html=True)
+
+# Grid identitas
+st.markdown("""
+    <div class="identitas-grid">
+        <div class="identitas-card">
+            <div class="icon">👤</div>
+            <div class="label">Nama</div>
+            <div class="value">Liafathra</div>
         </div>
-        <div class="identitas-row">
-            <span class="identitas-label">NIM</span><br>
-            4611422128
+        <div class="identitas-card">
+            <div class="icon">🎓</div>
+            <div class="label">Program Studi</div>
+            <div class="value">Teknik Informatika</div>
         </div>
-        <div class="identitas-row">
-            <span class="identitas-label">Program Studi</span><br>
-            Teknik Informatika
+        <div class="identitas-card">
+            <div class="icon">🏛️</div>
+            <div class="label">Universitas</div>
+            <div class="value">Universitas Negeri Semarang</div>
         </div>
-        <div class="identitas-row">
-            <span class="identitas-label">Fakultas</span><br>
-            Fakultas Matematika dan Ilmu Pengetahuan Alam
+        <div class="identitas-card">
+            <div class="icon">🪪</div>
+            <div class="label">NIM</div>
+            <div class="value">4611422128</div>
         </div>
-        <div class="identitas-row">
-            <span class="identitas-label">Universitas</span><br>
-            Universitas Negeri Semarang
+        <div class="identitas-card">
+            <div class="icon">🏢</div>
+            <div class="label">Fakultas</div>
+            <div class="value">Fakultas Matematika dan Ilmu Pengetahuan Alam</div>
+        </div>
+        <div class="identitas-card">
+            <div class="icon">📅</div>
+            <div class="label">Tahun</div>
+            <div class="value">2025</div>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-st.markdown("<hr class='divider'>", unsafe_allow_html=True)
-
-# ===================== LOAD DATA (BACKGROUND) =====================
-if 'data_loaded' not in st.session_state:
-    with st.spinner("📂 Memuat data..."):
-        ispu_series = pd.read_csv('data/ispu_series.csv',
-                                   index_col=0, parse_dates=True)['nilai_ispu']
-        arima_df = pd.read_csv('data/arima_predictions.csv',
-                                parse_dates=['tanggal'])
-        hybrid_df = pd.read_csv('data/hybrid_predictions.csv',
-                                 parse_dates=['tanggal'])
-        metrics_df = pd.read_csv('data/metrics.csv')
-
-        st.session_state['ispu_series'] = ispu_series
-        st.session_state['arima_df'] = arima_df
-        st.session_state['hybrid_df'] = hybrid_df
-        st.session_state['metrics_df'] = metrics_df
-
-        arima_row = metrics_df[metrics_df['Model'] == 'ARIMA'].iloc[0]
-        hybrid_row = metrics_df[metrics_df['Model'] == 'Hybrid ARIMA-BiLSTM'].iloc[0]
-
-        st.session_state['arima_metrics'] = {
-            'MAE': arima_row['MAE'],
-            'MSE': arima_row['MSE'],
-            'RMSE': arima_row['RMSE']
-        }
-        st.session_state['hybrid_metrics'] = {
-            'MAE': hybrid_row['MAE'],
-            'MSE': hybrid_row['MSE'],
-            'RMSE': hybrid_row['RMSE']
-        }
-        st.session_state['data_loaded'] = True
-
-# Metrik
-st.subheader("📊 Performa Model")
-col1, col2, col3 = st.columns(3)
-col1.metric("Total Data", len(st.session_state['ispu_series']))
-col2.metric("RMSE ARIMA",
-            f"{st.session_state['arima_metrics']['RMSE']:.4f}")
-col3.metric("RMSE Hybrid",
-            f"{st.session_state['hybrid_metrics']['RMSE']:.4f}")
-
+# Dosen pembimbing
 st.markdown("""
-### 📌 Panduan Navigasi
-Gunakan sidebar kiri untuk navigasi:
-- 📊 **EDA** — Lihat visualisasi dan statistik data
-- 📉 **ARIMA** — Lihat hasil model ARIMA
-- 🧠 **BiLSTM** — Lihat hasil model BiLSTM
-- 🏆 **Evaluasi** — Bandingkan semua model
-- 🔮 **Prediksi** — Prediksi ISPU hari ke depan
-""")
+    <div class="dosbing-card">
+        <div class="icon">👨‍🏫</div>
+        <div>
+            <div class="label">Dosen Pembimbing</div>
+            <div class="value">Endang Sugiharti, S.Si., M.Kom.</div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Fitur bawah
+st.markdown("""
+    <div class="fitur-grid">
+        <div class="fitur-item">
+            <div class="fitur-icon">☁️</div>
+            <div class="fitur-label">Kualitas Udara</div>
+        </div>
+        <div class="fitur-item">
+            <div class="fitur-icon">🧠</div>
+            <div class="fitur-label">AI & Deep Learning</div>
+        </div>
+        <div class="fitur-item">
+            <div class="fitur-icon">📊</div>
+            <div class="fitur-label">Prediksi Akurat</div>
+        </div>
+        <div class="fitur-item">
+            <div class="fitur-icon">✅</div>
+            <div class="fitur-label">Keputusan Cerdas</div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
