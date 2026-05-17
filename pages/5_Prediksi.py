@@ -13,7 +13,7 @@ tampilkan_sidebar()
 st.title("🔮 Prediksi ISPU Harian DKI Jakarta")
 
 if 'data_loaded' not in st.session_state:
-    st.warning("⚠️ Harap kembali ke halaman Home terlebih dahulu.")
+    st.warning("⚠️ Harap kembali ke halaman Dashboard terlebih dahulu.")
     st.stop()
 
 ispu_series = st.session_state['ispu_series']
