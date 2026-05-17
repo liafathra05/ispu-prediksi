@@ -10,7 +10,7 @@ tampilkan_sidebar()
 st.title("🏆 Evaluasi & Perbandingan Model")
 
 if 'data_loaded' not in st.session_state:
-    st.warning("⚠️ Harap kembali ke halaman Home terlebih dahulu.")
+    st.warning("⚠️ Harap kembali ke halaman Dashboard terlebih dahulu.")
     st.stop()
 
 arima_metrics = st.session_state['arima_metrics']
