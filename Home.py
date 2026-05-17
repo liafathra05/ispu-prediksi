@@ -62,15 +62,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Elemen visual berkaitan judul
-st.markdown("""
-    <div class="dashboard-container">
-        <div class="icon-container">🌫️🏙️📊</div>
-        <h1 style="color: #0f3460; font-size: 28px;">Sistem Prediksi Kualitas Udara</h1>
-        <p style="color: gray; font-size: 16px;">DKI Jakarta</p>
-    </div>
-""", unsafe_allow_html=True)
-
 # Judul skripsi
 st.markdown("""
     <div class="judul-skripsi">
