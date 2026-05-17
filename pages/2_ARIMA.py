@@ -54,7 +54,6 @@ st.plotly_chart(fig2, use_container_width=True)
 
 # Evaluasi
 st.subheader("📊 Hasil Evaluasi ARIMA")
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 col1.metric("MAE", f"{arima_metrics['MAE']:.4f}")
-col2.metric("MSE", f"{arima_metrics['MSE']:.4f}")
-col3.metric("RMSE", f"{arima_metrics['RMSE']:.4f}")
+col2.metric("RMSE", f"{arima_metrics['RMSE']:.4f}")
